@@ -1,0 +1,8 @@
+{
+    "branch_predictor": "trace",
+    "LLC": {
+        "sets": 512,
+        "replacement": "trace"
+    }
+}
+
