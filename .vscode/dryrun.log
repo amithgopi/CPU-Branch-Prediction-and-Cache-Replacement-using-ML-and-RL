@@ -1,0 +1,6 @@
+make --dry-run --always-make --keep-going --print-directory
+make: Entering directory `/Users/abbypjoby/TAMU/S2/AdvCompArch/project/676-Project'
+make: Leaving directory `/Users/abbypjoby/TAMU/S2/AdvCompArch/project/676-Project'
+ 
+make: *** No targets specified and no makefile found.  Stop.
+

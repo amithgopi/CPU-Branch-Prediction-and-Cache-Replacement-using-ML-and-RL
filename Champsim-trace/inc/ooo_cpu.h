@@ -14,6 +14,9 @@
 
 using namespace std;
 
+// extern int write_pipe;
+// extern int read_pipe;
+
 class CACHE;
 
 class CacheBus : public MemoryRequestProducer

@@ -17,12 +17,26 @@
 #include "tracereader.h"
 #include "vmem.h"
 
+#include "pipes_data.h"
+
+#include <iostream>
+#include <sstream>
+#include <unistd.h>
+#include <cstring>
+
+
+
 uint8_t warmup_complete[NUM_CPUS] = {}, simulation_complete[NUM_CPUS] = {}, all_warmup_complete = 0, all_simulation_complete = 0,
         MAX_INSTR_DESTINATIONS = NUM_INSTR_DESTINATIONS, knob_cloudsuite = 0, knob_low_bandwidth = 0;
 
 uint64_t warmup_instructions = 1000000, simulation_instructions = 10000000;
 
 auto start_time = time(NULL);
+
+
+int write_pipe;
+int read_pipe;
+
 
 // For backwards compatibility with older module source.
 champsim::deprecated_clock_cycle current_core_cycle;
@@ -303,7 +317,10 @@ void signal_handler(int signal)
   exit(1);
 }
 
-int main(int argc, char** argv)
+
+
+
+int real_main(int argc, char** argv)
 {
   // interrupt signal hanlder
   struct sigaction sigIntHandler;
@@ -510,3 +527,60 @@ int main(int argc, char** argv)
 
   return 0;
 }
+
+
+
+
+int main(int argc, char** argv) 
+{
+    std::cout << "Setting up and Opening Pipes for communication" << std::endl;
+
+    int pipe_cpp_to_py[2];
+    int pipe_py_to_cpp[2];
+
+    if (::pipe(pipe_cpp_to_py) || ::pipe(pipe_py_to_cpp))
+    {
+        std::cout << "Couldn't open pipes" << std::endl;
+        ::exit(1);
+    }
+
+    pid_t pid = fork();
+
+    if ( pid == 0 )
+    {
+        ::close(pipe_py_to_cpp[0]);
+        ::close(pipe_cpp_to_py[1]);
+        std::ostringstream oss;
+
+        oss << "export PY_READ_FD=" << pipe_cpp_to_py[0] << " && "
+            << "export PY_WRITE_FD=" << pipe_py_to_cpp[1] << " && "
+            << "export PYTHONUNBUFFERED=true && " // Force stdin, stdout and stderr to be totally unbuffered.
+            << "python rl_agent/py_test.py";
+
+        ::system(oss.str().c_str());
+        ::close(pipe_py_to_cpp[1]);
+        ::close(pipe_cpp_to_py[0]);
+    }
+    else if ( pid < 0 )
+    {
+        std::cout << "Fork failed." << std::endl;
+        ::exit(1);
+    }
+    else
+    {
+        ::close(pipe_py_to_cpp[1]);
+        ::close(pipe_cpp_to_py[0]);
+        write_pipe = pipe_cpp_to_py[1];
+        read_pipe = pipe_py_to_cpp[0];
+        real_main(argc,argv);
+        //read_loop(pipe_py_to_cpp[0], pipe_cpp_to_py[1]);
+        ::close(pipe_py_to_cpp[0]);
+        ::close(pipe_cpp_to_py[1]);
+
+    }
+
+    return 0;
+}
+
+
+
