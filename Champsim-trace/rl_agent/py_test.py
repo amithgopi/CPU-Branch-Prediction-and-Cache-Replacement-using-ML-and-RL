@@ -53,16 +53,11 @@ def read_from_pipe():
 
 def main():
     print("Script Starting")
-    bdone = False
-    while bdone == False:
+    for i in xrange(10):
         res = read_from_pipe()
-        if("stop" in res):
-            bdone = True
-            break
-        else:
-            print("Agent Received : ", res)
-            if("test" in res):
-                send_to_pipe(i)
+        print("Agent Received : ", res)
+        if("test" in res):
+            send_to_pipe(i)
 
         # time.sleep(1)
 

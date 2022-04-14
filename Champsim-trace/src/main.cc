@@ -572,7 +572,7 @@ int main(int argc, char** argv)
         ::close(pipe_cpp_to_py[0]);
         write_pipe = pipe_cpp_to_py[1];
         read_pipe = pipe_py_to_cpp[0];
-        real_main(argc,argv);
+        real_main(argc,argv); //champsim main function
         //read_loop(pipe_py_to_cpp[0], pipe_cpp_to_py[1]);
         ::close(pipe_py_to_cpp[0]);
         ::close(pipe_cpp_to_py[1]);

@@ -207,7 +207,7 @@ uint8_t O3_CPU::predict_branch(uint64_t ip, uint64_t predicted_target, uint8_t a
   //////////////////////////////////////////////////////////////////////////////
   //action here - send data to Python code
   std::ostringstream os;
-  os << "test " << ip;
+  os << "test," << ip <<;
   std::cout<<"C++ Sending to pipe " << write_pipe << "\n";
   send_msg(write_pipe, os.str());
   //////////////////////////////////////////////////////////////////////////////
