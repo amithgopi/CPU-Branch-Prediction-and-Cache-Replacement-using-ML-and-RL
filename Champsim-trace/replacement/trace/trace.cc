@@ -34,17 +34,16 @@ void write_to_file(uint32_t cpu, uint64_t instr_id, uint32_t set, uint32_t way, 
                << type << CSV_SEPERATOR
                << origin << endl;
     } else if (API == UPDATE_) {
-      trace_file_update << cpu << CSV_SEPERATOR 
+      trace_file_update << ip << CSV_SEPERATOR 
                << set << CSV_SEPERATOR
                << way << CSV_SEPERATOR
                << full_addr << CSV_SEPERATOR
-               << ip << CSV_SEPERATOR
-               << full_addr << CSV_SEPERATOR
-               << victim_addr << CSV_SEPERATOR
-               << (unsigned int)hit << CSV_SEPERATOR
-               << type << CSV_SEPERATOR
-               << origin << endl;
-
+              //  << ip << CSV_SEPERATOR
+              //  << full_addr << CSV_SEPERATOR
+              //  << victim_addr << CSV_SEPERATOR
+              //  << (unsigned int)hit << CSV_SEPERATOR
+               << type << CSV_SEPERATOR << endl;
+              //  << origin << endl;
     }
     
 }
