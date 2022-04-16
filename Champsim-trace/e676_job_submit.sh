@@ -1,5 +1,5 @@
 #!/bin/bash
-#SBATCH --job-name=serial_job_test   # Job name
+#SBATCH --job-name=branch_rl_training   # Job name
 #SBATCH --mail-type=END,FAIL         # Mail Events (NONE,BEGIN,FAIL,END,ALL)
 #SBATCH --mail-user=abbypjoby@tamu.edu   # Replace with your email address
 #SBATCH --ntasks=1                   # Run on a single CPU
