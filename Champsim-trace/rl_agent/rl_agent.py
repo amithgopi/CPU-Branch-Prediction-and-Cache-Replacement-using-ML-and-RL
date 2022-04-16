@@ -185,23 +185,26 @@ def getStateFromCsv(csv_res):
     return np.array(state)
 
 
-def getNextStateFromCsv(csv_res):
+def getNextStateAndRewardFromCsv(csv_res, takenAction):
     env_status = csv_res.split(',')
     state = [int(env_status[1]) , int(env_status[2]) , int(env_status[3]) , int(env_status[4])]
+    reward = 1 if (int(env_status[3]) == takenAction) else -1
+    # print(csv_res, reward)
     # print(state)
-    return np.array(state)
+    return np.array(state),reward
 
 
 scores = []
 action = 0
 scores_window = deque(maxlen=100)
-agent = Agent(state_count=4, action_count=1)
+agent = Agent(state_count=4, action_count=2)
 
+episode = 0
 while(1):
     # state = env.reset()
     score = 0
     res = read_from_pipe()
-    print(res)
+    # print(res)
     if "env" in res:
         state = getStateFromCsv(res)
         # get current state here state
@@ -209,29 +212,30 @@ while(1):
     # agent performs action on current state
     action = agent.act(state)
     send_to_pipe(action)
+    # print(action)
     
     # environment returns the results of those actions
     res = read_from_pipe()
     if "reward" in res:
-        next_state = getNextStateFromCsv(res)
+        next_state,reward = getNextStateAndRewardFromCsv(res, action)
+        # calculate reward
         # create these variables, next_state, reward from res 
     
     # agent learns from the response of environment
-    # agent.step(state, action, reward, next_state, done)
+    agent.step(state, action, reward, next_state, True)
     
     # increment score
-    # score += reward
+    score += reward
     
     # Update the current state
     # state = next_state - not needed
 
 
-    # scores.append(score)
-    # scores_window.append(score)
-    # print('\rEpisode {}\tAverage Score: {:.2f}'.format(episode, np.mean(scores_window)), end="")
-    # if(np.mean(scores_window) > 300):
-    #     print('score is greater than 200')
-    #     break
+    scores.append(score)
+    scores_window.append(score)
+    episode = episode + 1
+    if episode%100000 == 0:
+        print('Average Score: {:.2f}\n'.format(np.mean(scores_window)), end="")
         
 
 torch.save(agent.learning_network.state_dict(), 'checkpoint.pth')

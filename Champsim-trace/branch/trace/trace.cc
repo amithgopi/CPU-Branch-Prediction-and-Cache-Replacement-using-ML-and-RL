@@ -221,14 +221,14 @@ uint8_t O3_CPU::predict_branch(uint64_t ip, uint64_t predicted_target, uint8_t a
   if (!read_uint32(read_pipe, apiNameSize))
   {
       // EOF waiting for a message, script ended
-      std::cout << "EOF waiting for message, script ended" << std::endl;
+    //   std::cout << "EOF waiting for message, script ended" << std::endl;
       return -1;
   }
   std::string apiName = read_string(read_pipe, apiNameSize);
   uint32_t apiArgSize;
   if (!read_uint32(read_pipe, apiArgSize))
   {
-      std::cout << "EOF white reading apiArgSize" << std::endl;
+    //   std::cout << "EOF white reading apiArgSize" << std::endl;
       ::exit(1);
   }
   std::string apiArg = read_string(read_pipe, apiArgSize);
@@ -239,11 +239,11 @@ uint8_t O3_CPU::predict_branch(uint64_t ip, uint64_t predicted_target, uint8_t a
   // // Response comes as [resultSize][resultString]
   if (apiName == "action")
   {
-      std::cout << "Action from agent :" << apiArg << std::endl;
+    //   std::cout << "Action from agent :" << apiArg << std::endl;
   }
   else
   {
-      std::cout << "UNSUPPORTED API " << apiName << std::endl;
+    //   std::cout << "UNSUPPORTED API " << apiName << std::endl;
   }
 
 //////////////////////////////////////////////////////////////////////////////
