@@ -232,12 +232,12 @@ while(1):
 
 
     scores.append(score)
-    if episode % 1000 == 0:
+    if episode % 10000 == 0:
         scores_window.clear
     scores_window.append(score)
     episode = episode + 1
-    if episode%1000 == 0:
-        print('Average Score: {:.2f}\n'.format(np.mean(scores_window)), end="")
+    if episode%10000 == 0:
+        print('Instruction {}, Average Score: {:.2f}\n'.format(episode, np.mean(scores_window)), end="")
         
 
 torch.save(agent.learning_network.state_dict(), 'checkpoint.pth')

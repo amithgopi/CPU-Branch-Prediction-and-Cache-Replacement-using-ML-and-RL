@@ -8,9 +8,14 @@
 #SBATCH --partition=non-gpu          # This job does not use a GPU
 
 echo "Running 600.perlbench_s-210B.champsimtrace.xz"
+# bin/champsim \
+#   -warmup_instructions 200000000 \
+#   -simulation_instructions 1000000000 \
+#   -traces ~pgratz/dpc3_traces/600.perlbench_s-210B.champsimtrace.xz \
+#   > 600.perlbench_s-210B.txt
 bin/champsim \
-  -warmup_instructions 200000000 \
-  -simulation_instructions 1000000000 \
+  -warmup_instructions 20000 \
+  -simulation_instructions 1000000 \
   -traces ~pgratz/dpc3_traces/600.perlbench_s-210B.champsimtrace.xz \
   > 600.perlbench_s-210B.txt
 
