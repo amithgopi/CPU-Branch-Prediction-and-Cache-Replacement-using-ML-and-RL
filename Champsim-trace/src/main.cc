@@ -555,7 +555,8 @@ int main(int argc, char** argv)
         oss << "export PY_READ_FD=" << pipe_cpp_to_py[0] << " && "
             << "export PY_WRITE_FD=" << pipe_py_to_cpp[1] << " && "
             << "export PYTHONUNBUFFERED=true && " // Force stdin, stdout and stderr to be totally unbuffered.
-            << "python rl_agent/py_test.py";
+            // << "python3 rl_agent/py_test.py";
+            << "python3 rl_agent/rl_agent.py";
 
         ::system(oss.str().c_str());
         ::close(pipe_py_to_cpp[1]);

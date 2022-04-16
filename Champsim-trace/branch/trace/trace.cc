@@ -199,25 +199,18 @@ static std::string read_string(int read_fd, uint32_t sz)
 
 uint8_t O3_CPU::predict_branch(uint64_t ip, uint64_t predicted_target, uint8_t always_taken, uint8_t branch_type)
 {
-  uint32_t hash = ip % BIMODAL_PRIME;
-  write_to_file(ip, predicted_target, always_taken, branch_type, PREDICT);
+  // uint32_t hash = ip % BIMODAL_PRIME;
+  // write_to_file(ip, predicted_target, always_taken, branch_type, PREDICT);
 
   //////////////////////////////////////////////////////////////////////////////
   //                    Send data to python agent through pipe
   //////////////////////////////////////////////////////////////////////////////
   //action here - send data to Python code
   std::ostringstream os;
-  os << "test," << ip;
-  std::cout<<"C++ Sending to pipe " << write_pipe << "\n";
+  os << "env," <<std::to_string(ip) << "," << std::to_string(predicted_target) << "," << std::to_string(always_taken) << "," << std::to_string(branch_type);
+  // std::cout<<"Sending current state to agent \n";
   send_msg(write_pipe, os.str());
   //////////////////////////////////////////////////////////////////////////////
-
-  return bimodal_table[this][hash] >= (1 << (COUNTER_BITS - 1));
-}
-
-void O3_CPU::last_branch_result(uint64_t ip, uint64_t branch_target, uint8_t taken, uint8_t branch_type)
-{
-
 
 
   //////////////////////////////////////////////////////////////////////////////
@@ -229,7 +222,7 @@ void O3_CPU::last_branch_result(uint64_t ip, uint64_t branch_target, uint8_t tak
   {
       // EOF waiting for a message, script ended
       std::cout << "EOF waiting for message, script ended" << std::endl;
-      return;
+      return -1;
   }
   std::string apiName = read_string(read_pipe, apiNameSize);
   uint32_t apiArgSize;
@@ -244,9 +237,9 @@ void O3_CPU::last_branch_result(uint64_t ip, uint64_t branch_target, uint8_t tak
 
 
   // // Response comes as [resultSize][resultString]
-  if (apiName == "predict_branch")
+  if (apiName == "action")
   {
-      std::cout << "C++ Read from pipe :" << apiArg << std::endl;
+      std::cout << "Action from agent :" << apiArg << std::endl;
   }
   else
   {
@@ -255,14 +248,33 @@ void O3_CPU::last_branch_result(uint64_t ip, uint64_t branch_target, uint8_t tak
 
 //////////////////////////////////////////////////////////////////////////////
 
+  int action  = stoi(apiArg);
+  return action;
 
-  uint32_t hash = ip % BIMODAL_PRIME;
-  write_to_file(ip, branch_target, taken, branch_type, LAST);
+  // return bimodal_table[this][hash] >= (1 << (COUNTER_BITS - 1));
+}
 
-  if (taken)
-    bimodal_table[this][hash] = std::min(bimodal_table[this][hash] + 1, ((1 << COUNTER_BITS) - 1));
-  else
-    bimodal_table[this][hash] = std::max(bimodal_table[this][hash] - 1, 0);
+void O3_CPU::last_branch_result(uint64_t ip, uint64_t branch_target, uint8_t taken, uint8_t branch_type)
+{
+
+  //////////////////////////////////////////////////////////////////////////////
+  //                    Send data to python agent through pipe
+  //////////////////////////////////////////////////////////////////////////////
+  //action here - send data to Python code
+  std::ostringstream os;
+  os << "reward," << std::to_string(ip) << "," << std::to_string(branch_target) << "," << std::to_string(taken) << "," << std::to_string(branch_type);
+  // std::cout<<"Send last branch result" << write_pipe << "\n";
+  send_msg(write_pipe, os.str());
+  //////////////////////////////////////////////////////////////////////////////
+
+
+  // uint32_t hash = ip % BIMODAL_PRIME;
+  // write_to_file(ip, branch_target, taken, branch_type, LAST);
+
+  // if (taken)
+  //   bimodal_table[this][hash] = std::min(bimodal_table[this][hash] + 1, ((1 << COUNTER_BITS) - 1));
+  // else
+  //   bimodal_table[this][hash] = std::max(bimodal_table[this][hash] - 1, 0);
 
 
 }
