@@ -15,7 +15,7 @@ echo "Running 600.perlbench_s-210B.champsimtrace.xz"
 #   > 600.perlbench_s-210B.txt
 bin/champsim \
   -warmup_instructions 20000000 \
-  -simulation_instructions 200000000 \
+  -simulation_instructions 22000000 \
   -traces ~pgratz/dpc3_traces/600.perlbench_s-210B.champsimtrace.xz \
   > 600.perlbench_s-210B.txt
 
