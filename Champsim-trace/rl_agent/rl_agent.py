@@ -232,13 +232,30 @@ while(1):
 
 
     scores.append(score)
-    if episode % 10000 == 0:
-        scores_window.clear
     scores_window.append(score)
     episode = episode + 1
-    if episode%10000 == 0:
+    if episode%100 == 0:
         print('Instruction {}, Average Score: {:.2f}\n'.format(episode, np.mean(scores_window)), end="")
-        
+        scores_window.clear
+
+
 
 torch.save(agent.learning_network.state_dict(), 'checkpoint.pth')
+
+# def window_avg_points(og_points, window=1):
+#     i = 0
+#     new_points = []
+#     while i < len(og_points):
+#         new_points.append(np.mean(og_points[i: i+window]))
+#         i += window
+#     return new_points
+
+# win_scores = window_avg_points(scores, 50)
+
+# fig = plt.figure()
+# ax = fig.add_subplot(111)
+# plt.plot(np.arange(len(win_scores)), win_scores)
+# plt.ylabel('Score')
+# plt.xlabel('Episode # / 50')
+# plt.show()
         
