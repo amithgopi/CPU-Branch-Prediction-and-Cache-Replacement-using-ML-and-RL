@@ -234,7 +234,7 @@ while(1):
     scores.append(score)
     scores_window.append(score)
     episode = episode + 1
-    if episode%100 == 0:
+    if episode%10000 == 0:
         print('Instruction {}, Average Score: {:.2f}\n'.format(episode, np.mean(scores_window)), end="")
         scores_window.clear
 
