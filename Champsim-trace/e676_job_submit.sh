@@ -12,7 +12,7 @@ bin/champsim \
   -warmup_instructions 200000 \
   -simulation_instructions 2000000 \
   -traces ~pgratz/dpc3_traces/600.perlbench_s-210B.champsimtrace.xz \
-  > 600.perlbench_s-210B.txt
+  > 6600.perlbench_s-210B.txt
 
 ### Add more ChampSim runs below.
 
