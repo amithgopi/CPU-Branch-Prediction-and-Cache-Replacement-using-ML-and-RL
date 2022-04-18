@@ -183,7 +183,7 @@ class Cache():
         cacheLineAddress = address >> self.offsetBits # Address of cache line, remove offset from address
         if cacheLineAddress in self.preuseDistances:
             # User a global access counter to compute preuse distance as its differnce to the value in the preuseDistance dictionary
-            preuse = globalAccessCount - self.preuseDistances[cacheLineAddress]
+            preuse = self.globalAccessCount - self.preuseDistances[cacheLineAddress]
         
         blocks = self.BLOCKS[setIdx*self.numWays: setIdx*self.numWays + self.numWays]
         state = [offset, preuse ,accessType] # Access Info
@@ -237,7 +237,7 @@ class Cache():
         return hit
             
     def handleHit(self, setIdx, way, accessType, addressParts):
-        block: Block = self.BLOCKS[setIdx*way]
+        block: Block = self.BLOCKS[setIdx*self.numWays + way]
         tag, setIdx, offset = addressParts
         # Update block params
         block.offset = offset
@@ -249,7 +249,7 @@ class Cache():
         block.hits += 1
 
     def handleMiss(self, setIdx, way, accessType, addressParts):
-        block: Block = self.BLOCKS[setIdx*way]
+        block: Block = self.BLOCKS[setIdx*self.numWays + way]
         tag, setIdx, offset = addressParts
         # Update block params
         block.valid = True
