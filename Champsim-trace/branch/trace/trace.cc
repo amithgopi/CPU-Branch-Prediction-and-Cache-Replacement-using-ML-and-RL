@@ -189,7 +189,6 @@ static std::string read_string(int read_fd, uint32_t sz)
             iBuf += rc;
         }
     }
-
     return std::string( &(msgBuf[0]) );
 }
 
@@ -210,6 +209,7 @@ uint8_t O3_CPU::predict_branch(uint64_t ip, uint64_t predicted_target, uint8_t a
   os << "env," <<std::to_string(ip) << "," << std::to_string(predicted_target) << "," << std::to_string(always_taken) << "," << std::to_string(branch_type);
   // std::cout<<"Sending current state to agent \n";
   send_msg(write_pipe, os.str());
+  
   //////////////////////////////////////////////////////////////////////////////
 
 
@@ -229,7 +229,7 @@ uint8_t O3_CPU::predict_branch(uint64_t ip, uint64_t predicted_target, uint8_t a
   if (!read_uint32(read_pipe, apiArgSize))
   {
     //   std::cout << "EOF white reading apiArgSize" << std::endl;
-      ::exit(1);
+    //   ::exit(1);
   }
   std::string apiArg = read_string(read_pipe, apiArgSize);
 
@@ -247,7 +247,6 @@ uint8_t O3_CPU::predict_branch(uint64_t ip, uint64_t predicted_target, uint8_t a
   }
 
 //////////////////////////////////////////////////////////////////////////////
-
   int action  = stoi(apiArg);
   return action;
 

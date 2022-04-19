@@ -66,10 +66,10 @@ def read_from_pipe():
 
 
 class NeuralNetwork(nn.Module):
-    def __init__(self, states_count, action_count):
+    def __init__(self, state_count, action_count):
         super(NeuralNetwork, self).__init__()
         self.linear_relu_stack = nn.Sequential(
-            nn.Linear(states_count, 64),
+            nn.Linear(state_count, 64),
             nn.ReLU(),
             nn.Linear(64, 64),
             nn.ReLU(),
@@ -120,13 +120,13 @@ GAMMA = 0.99
 EPSILON = 1.0
 
 class Agent():
-    def __init__(self, state_count, action_count):
+    def __init__(self, state_count, action_count, target, learning):
         self.state_count = state_count
         self.action_count = action_count
         self.epsilon = EPSILON
         
-        self.learning_network = NeuralNetwork(state_count, action_count).to(device)
-        self.target_network = NeuralNetwork(state_count, action_count).to(device)
+        self.learning_network = learning #NeuralNetwork(state_count, action_count).to(device)
+        self.target_network = target #NeuralNetwork(state_count, action_count).to(device)
         self.optimizer = optim.Adam(self.learning_network.parameters(), lr=ALPHA)
         
         self.memory = Memory()
@@ -197,7 +197,17 @@ def getNextStateAndRewardFromCsv(csv_res, takenAction):
 scores = []
 action = 0
 scores_window = deque(maxlen=100)
-agent = Agent(state_count=4, action_count=2)
+
+model = NeuralNetwork(state_count=4, action_count=2)
+model2 = NeuralNetwork(state_count=4, action_count=2)
+
+# model.load_state_dict(torch.load('rl_agent/rl_model.pth'))
+# model.eval()
+
+# model2.load_state_dict(torch.load('rl_agent/rl_model.pth'))
+# model2.eval()
+
+agent = Agent(state_count=4, action_count=2, target=model, learning=model2)
 
 episode = 0
 while(1):
@@ -234,13 +244,15 @@ while(1):
     scores.append(score)
     scores_window.append(score)
     episode = episode + 1
+
+    print(episode)
+    if episode % 1000 == 0:
+        torch.save(agent.learning_network.state_dict(), 'rl_model.pth')
+
     if episode%10000 == 0:
         print('Instruction {}, Average Score: {:.2f}\n'.format(episode, np.mean(scores_window)), end="")
         scores_window.clear
 
-
-
-torch.save(agent.learning_network.state_dict(), 'checkpoint.pth')
 
 # def window_avg_points(og_points, window=1):
 #     i = 0
