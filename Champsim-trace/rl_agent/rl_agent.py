@@ -245,7 +245,6 @@ while(1):
     scores_window.append(score)
     episode = episode + 1
 
-    print(episode)
     if episode % 1000 == 0:
         torch.save(agent.learning_network.state_dict(), 'rl_model.pth')
 
