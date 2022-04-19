@@ -201,11 +201,11 @@ scores_window = deque(maxlen=100)
 model = NeuralNetwork(state_count=4, action_count=2)
 model2 = NeuralNetwork(state_count=4, action_count=2)
 
-# model.load_state_dict(torch.load('rl_agent/rl_model.pth'))
-# model.eval()
+model.load_state_dict(torch.load('rl_agent/rl_model.pth'))
+model.eval()
 
-# model2.load_state_dict(torch.load('rl_agent/rl_model.pth'))
-# model2.eval()
+model2.load_state_dict(torch.load('rl_agent/rl_model.pth'))
+model2.eval()
 
 agent = Agent(state_count=4, action_count=2, target=model, learning=model2)
 
