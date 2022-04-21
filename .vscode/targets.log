@@ -6,8 +6,11 @@ make all --print-data-base --no-builtin-variables --no-builtin-rules --question
 # PARTICULAR PURPOSE.
 
 # This program built for i386-apple-darwin11.3.0
+ 
+make: *** No rule to make target `all'.  Stop.
 
-# Make data base, printed on Sat Apr 16 20:29:28 2022
+
+# Make data base, printed on Tue Apr 19 23:02:17 2022
 
 # Variables
 
@@ -44,7 +47,7 @@ __CFBundleIdentifier = com.microsoft.VSCode
 # environment
 INFOPATH = /opt/homebrew/share/info:
 # environment
-VSCODE_IPC_HOOK_EXTHOST = /var/folders/g3/gn5lf66n21xbzw73n71bvwfm0000gn/T/vscode-ipc-096955a1-a54f-4aea-bb73-99a0940d013f.sock
+VSCODE_IPC_HOOK_EXTHOST = /var/folders/g3/gn5lf66n21xbzw73n71bvwfm0000gn/T/vscode-ipc-0e09f6fa-4b62-4442-aa85-c34ea60b96be.sock
 # environment
 VSCODE_CWD = /
 # environment
@@ -54,7 +57,7 @@ LSCOLORS = Gxfxcxdxbxegedabagacad
 # environment
 NVM_BIN = /Users/abbypjoby/.nvm/versions/node/v12.22.11/bin
 # environment
-LaunchInstanceID = 13E1C1C8-0309-4039-A360-F04D8A1A0E6A
+LaunchInstanceID = 4A374E14-F0C5-4BFD-B701-CD2C6003A2E5
 # environment
 VSCODE_LOG_STACK = false
 # environment
@@ -62,11 +65,11 @@ ELECTRON_RUN_AS_NODE = 1
 # default
 .FEATURES := target-specific order-only second-expansion else-if archives jobserver check-symlink
 # environment
-SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.aORBOpL4q4/Listeners
+SSH_AUTH_SOCK = /private/tmp/com.apple.launchd.mniDd1Afub/Listeners
 # automatic
 %F = $(notdir $%)
 # environment
-DISPLAY = /private/tmp/com.apple.launchd.jDE6GbkBwk/org.xquartz:0
+DISPLAY = /private/tmp/com.apple.launchd.cmWjttmLy0/org.xquartz:0
 # environment
 CONDA_EXE = /Users/abbypjoby/opt/anaconda3/bin/conda
 # environment
@@ -180,7 +183,7 @@ AUTOJUMP_ERROR_PATH = /Users/abbypjoby/Library/autojump/errors.log
 # environment
 CONDA_PREFIX = /Users/abbypjoby/opt/anaconda3
 # environment
-VSCODE_PID = 574
+VSCODE_PID = 596
 # environment
 _CE_CONDA = 
 # environment
@@ -194,7 +197,7 @@ LANG = C
 
 # Directories
 
-# . (device 16777232, inode 13511750): 9 files, no impossibilities.
+# . (device 16777230, inode 13511750): 9 files, no impossibilities.
 
 # 9 files, no impossibilities in 1 directories.
 
@@ -268,8 +271,6 @@ GNUmakefile:
 # strcache size: total = 0 / max = 0 / min = 4096 / avg = 0
 # strcache free: total = 0 / max = 0 / min = 4096 / avg = 0
 
-# Finished Make data base on Sat Apr 16 20:29:28 2022
+# Finished Make data base on Tue Apr 19 23:02:17 2022
 
  
-make: *** No rule to make target `all'.  Stop.
-
